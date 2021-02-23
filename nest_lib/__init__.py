@@ -124,6 +124,7 @@ class NestAPI:
                 self.error_handler(json_resp)
                 return response
             cls = CLASS_FOR_SENSOR_TYPE[json_resp["type"]]
+            json_resp["time_received"] = int(time.time())
             if cls is None:
                 return json_resp
             return cls(json_resp)

@@ -1,5 +1,6 @@
 """Thermostat Class"""
 
+import time
 from enum import Enum
 from typing import Mapping
 
@@ -54,6 +55,7 @@ HEAT_SETPOINT = "Setpoint.Heat"
 COOL_SETPOINT = "Setpoint.Cool"
 CELSIUS = "CELSIUS"
 FAHRENHEIT = "FAHRENHEIT"
+TIME_RECEIVED = "time_received"
 
 
 def celsius_to_fahrenheit(temp: float) -> float:
@@ -65,6 +67,7 @@ def fahrenheit_to_celsius(temp: float) -> float:
 
 class Thermostat(BaseSensor):
     def __init__(self, config):
+        self._data = None
         super().__init__(config)
     def process_config(self, config) -> Mapping:
         traits = config.get(TRAITS_KEY, {})
@@ -72,6 +75,7 @@ class Thermostat(BaseSensor):
             NAME_KEY: config.get(NAME_KEY, ''),
             TYPE_KEY: config.get(TYPE_KEY, ''),
             ASSIGNEE_KEY: config.get(ASSIGNEE_KEY, ''),
+            TIME_RECEIVED: config.get(TIME_RECEIVED, int(time.time())),
             CUSTOM_NAME_KEY: traits.get(TRAITS_INFO_KEY, {}).get(CUSTOM_NAME_KEY, ''),
             AMBIENT_HUMIDITY_KEY: traits.get(HUMIDITY_KEY, {}).get(AMBIENT_HUMIDITY_KEY, 0),
             CONNECTIVITY_KEY: traits.get(CONNECTIVITY_KEY, {}).get(CONNECTIVITY_STATUS_KEY, "OFFLINE"),
@@ -175,3 +179,6 @@ class Thermostat(BaseSensor):
             if self.temp_scale == FAHRENHEIT:
                 return celsius_to_fahrenheit(self.heat_setpoint), celsius_to_fahrenheit(self.cool_setpoint)
             return self.heat_setpoint, self.cool_setpoint
+    @property
+    def time_received(self):
+        return self._data[TIME_RECEIVED]

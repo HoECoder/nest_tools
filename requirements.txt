@@ -1,0 +1,5 @@
+arrow==0.17.0
+click==7.1.2
+python-dotenv==0.15.0
+requests==2.25.1
+toml==0.10.2
