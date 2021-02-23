@@ -17,6 +17,9 @@ REFRESH_TOKEN_FILE = "REFRESH_TOKEN_FILE"
 #Project ID
 PROJECT_ID_FILE = "PROJECT_ID_FILE"
 
+#Sensor to read automatically
+THERMOSTAT_DEVICE_ID = "THERMOSTAT_DEVICE_ID"
+
 
 class Settings:
     def __init__(self, env_file: Union[str, None]=None):
@@ -45,3 +48,6 @@ class Settings:
     @property
     def project_id_file(self):
         return self._data.get(PROJECT_ID_FILE, '')
+    @property
+    def default_sensor_id(self):
+        return self._data.get(THERMOSTAT_DEVICE_ID, '')
